@@ -48,5 +48,10 @@ return require('packer').startup(function(use)
             }
         }
         -- use("github/copilot.vim")
+        use {
+            'xeluxee/competitest.nvim',
+            requires = 'MunifTanjim/nui.nvim',
+            config = function() require('competitest').setup() end
+        }
 
     end)
