@@ -53,5 +53,7 @@ return require('packer').startup(function(use)
             requires = 'MunifTanjim/nui.nvim',
             config = function() require('competitest').setup() end
         }
+        use { 'mhartington/formatter.nvim' }
+        use { 'Civitasv/cmake-tools.nvim' }
 
     end)
