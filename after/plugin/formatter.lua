@@ -17,7 +17,7 @@ require("formatter").setup {
                 exe = "clang-format",
                 -- Defaults to base llvm style
                 -- args = {"--style=file"},
-                -- Example, just read clang-format --help for more tips 
+                -- Example, just read clang-format --help for more tips
                 -- args = {"--style='{BasedOnStyle: llvm,IndentWidth: 8}'"},
                 -- What I usually use
                 args = {"--style='{BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4, AccessModifierOffset: -4, AllowShortFunctionsOnASingleLine: All, AllowShortIfStatementsOnASingleLine: AllIfsAndElse}'"},
@@ -52,7 +52,30 @@ require("formatter").setup {
         }
       end
     },
-
+    typescript = {
+      function()
+        return {
+          exe = "prettier",
+          args = {
+            "--stdin-filepath",
+            vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)),
+            '--single-quote'
+          },
+          stdin = true,
+        }
+      end
+    },
+    rust = {
+      function()
+        return {
+          exe = "rustfmt",
+          args = {
+            "--edition 2021",
+          },
+          stdin = true,
+        }
+      end
+    },
     -- Use the special "*" filetype for defining formatter configurations on
     -- any filetype
     ["*"] = {
