@@ -25,6 +25,20 @@ require("formatter").setup {
             }
         end
     },
+    c = {
+        function()
+            return {
+                exe = "clang-format",
+                -- Defaults to base llvm style
+                -- args = {"--style=file"},
+                -- Example, just read clang-format --help for more tips
+                -- args = {"--style='{BasedOnStyle: llvm,IndentWidth: 8}'"},
+                -- What I usually use
+                args = {"--style='{BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4, AccessModifierOffset: -4, AllowShortFunctionsOnASingleLine: All, AllowShortIfStatementsOnASingleLine: AllIfsAndElse}'"},
+                stdin=true,
+            }
+        end
+    },
     lua = {
       -- "formatter.filetypes.lua" defines default configurations for the
       -- "lua" filetype
