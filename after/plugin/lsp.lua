@@ -17,12 +17,22 @@ end)
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = {'tsserver','eslint', 'rust_analyzer'},
+  ensure_installed = {'tsserver','eslint', 'rust_analyzer', 'clangd'},
   handlers = {
     lsp_zero.default_setup,
     lua_ls = function()
       local lua_opts = lsp_zero.nvim_lua_ls()
       require('lspconfig').lua_ls.setup(lua_opts)
+    end,
+    clangd = function()
+        require('lspconfig').clangd.setup({
+            cmd = {
+                "clangd",
+                "--query-driver=/Applications/ArmGNUToolchain/13.2.Rel1/arm-none-eabi/bin/arm-none-eabi-gcc",
+                -- Add any additional clangd options here
+            },
+            on_attach = lsp_zero.common_on_attach,
+        })
     end,
   }
 })
