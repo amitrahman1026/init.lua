@@ -25,20 +25,50 @@ require("formatter").setup {
             }
         end
     },
-    c = {
-        function()
-            return {
-                exe = "clang-format",
-                -- Defaults to base llvm style
-                -- args = {"--style=file"},
-                -- Example, just read clang-format --help for more tips
-                -- args = {"--style='{BasedOnStyle: llvm,IndentWidth: 8}'"},
-                -- What I usually use
-                args = {"--style='{BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4, AccessModifierOffset: -4, AllowShortFunctionsOnASingleLine: All, AllowShortIfStatementsOnASingleLine: AllIfsAndElse}'"},
-                stdin=true,
-            }
+        c = {
+      function()
+        -- Check if the current file is in the specific workspace
+        local workspace_path = "/Users/amit/kisi-hardware-core"
+        local current_path = vim.fn.expand("%:p:h")
+        if current_path:sub(1, #workspace_path) == workspace_path then
+          -- Use Uncrustify with specific configuration file for files in the workspace
+          return {
+            exe = "uncrustify",
+            args = {
+              "-c", workspace_path .. "/uncrustify.cfg",
+              "-l", "C",
+              "-q",
+              "--no-backup",
+            },
+            stdin = true,
+          }
+        else
+          -- Fallback to clang-format or any other formatter you prefer outside the workspace
+          return {
+            exe = "clang-format",
+            args = {
+              "--style='{BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4, AccessModifierOffset: -4, AllowShortFunctionsOnASingleLine: All, AllowShortIfStatementsOnASingleLine: AllIfsAndElse}'",
+            },
+            stdin = true,
+          }
         end
+      end
     },
+
+--    c = {
+--        function()
+--            return {
+--                exe = "clang-format",
+--                -- Defaults to base llvm style
+--                -- args = {"--style=file"},
+--                -- Example, just read clang-format --help for more tips
+--                -- args = {"--style='{BasedOnStyle: llvm,IndentWidth: 8}'"},
+--                -- What I usually use
+--                args = {"--style='{BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4, AccessModifierOffset: -4, AllowShortFunctionsOnASingleLine: All, AllowShortIfStatementsOnASingleLine: AllIfsAndElse}'"},
+--                stdin=true,
+--            }
+--        end
+--    },
     lua = {
       -- "formatter.filetypes.lua" defines default configurations for the
       -- "lua" filetype
