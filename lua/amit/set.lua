@@ -29,4 +29,5 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
-
+vim.g.codestats_api_key = 'SFMyNTY.WVcxcGRISmhhRzFoYmpFd01qWT0jI01qSTVNakk9.8tEX26ByZ61r0jMxXoYN_qJ7AGso3rY8604RXA3nN5s'
+vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
