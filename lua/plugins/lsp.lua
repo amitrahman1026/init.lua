@@ -4,12 +4,18 @@ return {
 		branch = "v4.x",
 		lazy = true,
 		config = false,
+		init = function()
+			-- Disable automatic setup, we are doing it manually
+			vim.g.lsp_zero_extend_cmp = 0
+			vim.g.lsp_zero_extend_lspconfig = 0
+		end,
 	},
 	{
 		"williamboman/mason.nvim",
 		lazy = false,
 		config = true,
 	},
+	-- Autocompletion
 	{
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
@@ -18,32 +24,32 @@ return {
 		},
 		config = function()
 			local cmp = require("cmp")
-			local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
 			cmp.setup({
 				sources = {
 					{ name = "path" },
 					{ name = "nvim_lsp" },
 					{ name = "nvim_lua" },
-					{ name = "luasnip", keyword_length = 2 },
 					{ name = "buffer", keyword_length = 3 },
+					{ name = "luasnip", keyword_length = 2 },
 				},
-				mapping = cmp.mapping.preset.insert({
-					["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
-					["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
-					["<C-y>"] = cmp.mapping.confirm({ select = true }),
-					["<C-Space>"] = cmp.mapping.complete(),
-					["<C-u>"] = cmp.mapping.scroll_docs(-4),
-					["<C-d>"] = cmp.mapping.scroll_docs(4),
-				}),
 				snippet = {
 					expand = function(args)
 						require("luasnip").lsp_expand(args.body)
 					end,
 				},
+				mapping = cmp.mapping.preset.insert({
+					["<C-p>"] = cmp.mapping.select_prev_item(),
+					["<C-n>"] = cmp.mapping.select_next_item(),
+					["<C-y>"] = cmp.mapping.confirm({ select = true }),
+					["<C-Space>"] = cmp.mapping.complete(),
+					["<C-u>"] = cmp.mapping.scroll_docs(-4),
+					["<C-d>"] = cmp.mapping.scroll_docs(4),
+				}),
 			})
 		end,
 	},
+	-- LSP
 	{
 		"neovim/nvim-lspconfig",
 		cmd = { "LspInfo", "LspInstall", "LspStart" },
@@ -54,8 +60,9 @@ return {
 		},
 		config = function()
 			local lsp_zero = require("lsp-zero")
+			local lspconfig = require("lspconfig")
 
-			lsp_zero.on_attach(function(client, bufnr)
+			local lsp_attach = function(client, bufnr)
 				local opts = { buffer = bufnr, remap = false }
 
 				vim.keymap.set("n", "gd", function()
@@ -88,22 +95,47 @@ return {
 				vim.keymap.set("i", "<C-h>", function()
 					vim.lsp.buf.signature_help()
 				end, opts)
-			end)
+			end
 
 			lsp_zero.extend_lspconfig({
-				sign_text = true,
 				capabilities = require("cmp_nvim_lsp").default_capabilities(),
+				on_attach = lsp_attach,
+				float_border = "rounded",
+				sign_text = true,
 			})
 
 			require("mason-lspconfig").setup({
-				ensure_installed = { "tsserver", "eslint", "rust_analyzer", "ocamllsp", "clangd" },
+				ensure_installed = { "tsserver", "eslint", "rust_analyzer", "clangd" },
 				handlers = {
 					lsp_zero.default_setup,
 					lua_ls = function()
 						local lua_opts = lsp_zero.nvim_lua_ls()
-						require("lspconfig").lua_ls.setup(lua_opts)
+						lspconfig.lua_ls.setup(lua_opts)
 					end,
 				},
+			})
+
+			-- Specific setup for ocamllsp
+			lspconfig.ocamllsp.setup({
+				cmd = { "opam", "exec", "--", "ocamllsp" },
+				capabilities = require("cmp_nvim_lsp").default_capabilities(),
+				filetypes = {
+					"ocaml",
+					"ocaml.menhir",
+					"ocaml.interface",
+					"ocaml.ocamllex",
+					"reason",
+					"dune",
+				},
+				root_dir = lspconfig.util.root_pattern(
+					"*.opam",
+					"esy.json",
+					"package.json",
+					".git",
+					"dune-project",
+					"dune-workspace"
+				),
+				on_attach = lsp_attach,
 			})
 		end,
 	},
