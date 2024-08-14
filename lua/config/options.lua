@@ -49,5 +49,3 @@ opt.colorcolumn = "80" -- Show a vertical line at column 80
 -- Python provider for some plugins
 vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
 
--- Code stats API key ... Yes, I know it's public, sue me. This has no use for you.
-vim.g.codestats_api_key = "SFMyNTY.WVcxcGRISmhhRzFoYmpFd01qWT0jI01qSTVNamM9.a2xb3GC9EjYiceQM1NnoTKf8zljqCQtJe4yrEBydFxg"
