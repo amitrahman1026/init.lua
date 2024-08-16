@@ -1,7 +1,19 @@
 return {
 	"nvim-lualine/lualine.nvim",
-	dependencies = { "nvim-tree/nvim-web-devicons" },
+	dependencies = {
+		"nvim-tree/nvim-web-devicons",
+		"https://gitlab.com/code-stats/code-stats-vim.git",
+	},
 	config = function()
+		local function code_stats_xp()
+			local ok, result = pcall(vim.fn.CodeStatsXp)
+			if ok then
+				return result
+			else
+				return "C::S N/A"
+			end
+		end
+
 		require("lualine").setup({
 			options = {
 				icons_enabled = true,
@@ -25,7 +37,7 @@ return {
 				lualine_a = { "mode" },
 				lualine_b = { "branch", "diff", "diagnostics" },
 				lualine_c = { "filename" },
-				lualine_x = { "encoding", "fileformat", "filetype", code_stats },
+				lualine_x = { "encoding", "fileformat", "filetype", code_stats_xp },
 				lualine_y = { "progress" },
 				lualine_z = { "location" },
 			},
