@@ -1,5 +1,8 @@
 return {
 	"mhartington/formatter.nvim",
+	keys = {
+		{ "<leader>f", ":Format<CR>", desc = "Format code" },
+	},
 	config = function()
 		-- Utilities for creating configurations
 		local util = require("formatter.util")

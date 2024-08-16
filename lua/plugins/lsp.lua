@@ -52,6 +52,79 @@ return {
 	-- LSP
 	{
 		"neovim/nvim-lspconfig",
+		keys = {
+			{
+				"gd",
+				function()
+					vim.lsp.buf.definition()
+				end,
+				desc = "Go to definition",
+			},
+			{
+				"K",
+				function()
+					vim.lsp.buf.hover()
+				end,
+				desc = "Show hover information",
+			},
+			{
+				"<leader>vws",
+				function()
+					vim.lsp.buf.workspace_symbol()
+				end,
+				desc = "List workspace symbols",
+			},
+			{
+				"<leader>vd",
+				function()
+					vim.diagnostic.open_float()
+				end,
+				desc = "Show diagnostics in float",
+			},
+			{
+				"[d",
+				function()
+					vim.diagnostic.goto_next()
+				end,
+				desc = "Go to next diagnostic",
+			},
+			{
+				"]d",
+				function()
+					vim.diagnostic.goto_prev()
+				end,
+				desc = "Go to previous diagnostic",
+			},
+			{
+				"<leader>vca",
+				function()
+					vim.lsp.buf.code_action()
+				end,
+				desc = "Show code actions",
+			},
+			{
+				"<leader>vrr",
+				function()
+					vim.lsp.buf.references()
+				end,
+				desc = "Show references",
+			},
+			{
+				"<leader>vrn",
+				function()
+					vim.lsp.buf.rename()
+				end,
+				desc = "Rename symbol",
+			},
+			{
+				"<C-h>",
+				function()
+					vim.lsp.buf.signature_help()
+				end,
+				mode = "i",
+				desc = "Show signature help",
+			},
+		},
 		cmd = { "LspInfo", "LspInstall", "LspStart" },
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
