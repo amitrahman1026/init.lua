@@ -2,16 +2,13 @@ return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = {
 		"nvim-tree/nvim-web-devicons",
-		"https://gitlab.com/code-stats/code-stats-vim.git",
+		"YannickFricke/codestats.nvim",
 	},
 	config = function()
 		local function code_stats_xp()
-			local ok, result = pcall(vim.fn.CodeStatsXp)
-			if ok then
-				return result
-			else
-				return "C::S N/A"
-			end
+			local codestats = require("codestats-nvim")
+			local xp_count = codestats.get_xp_count()
+			return string.format("C::S %d", xp_count)
 		end
 
 		require("lualine").setup({
