@@ -105,7 +105,7 @@ return {
 			})
 
 			require("mason-lspconfig").setup({
-				ensure_installed = { "tsserver", "eslint", "rust_analyzer", "clangd" },
+				ensure_installed = { "tsserver", "eslint", "rust_analyzer" },
 				handlers = {
 					lsp_zero.default_setup,
 					lua_ls = function()
@@ -135,6 +135,13 @@ return {
 					"dune-project",
 					"dune-workspace"
 				),
+				on_attach = lsp_attach,
+			})
+
+			-- Specific setup for clangd
+			lspconfig.clangd.setup({
+				cmd = { "clangd" }, -- Use homebrew's llvm/clangd ideally, remember to add the appropriate alias' on a mac
+				capabilities = require("cmp_nvim_lsp").default_capabilities(),
 				on_attach = lsp_attach,
 			})
 		end,
