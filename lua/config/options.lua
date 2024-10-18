@@ -49,3 +49,6 @@ opt.colorcolumn = "80" -- Show a vertical line at column 80
 -- Python provider for some plugins
 vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
 
+-- Netrw tree mode
+vim.g.netrw_liststyle = 3
+vim.g.netrw_winsize = 25
