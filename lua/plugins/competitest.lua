@@ -117,7 +117,7 @@ return {
 			companion_port = 27121,
 			receive_print_message = true,
 			template_file = {
-				cpp = "/Users/amit/interview_practice/codeforces/templates/template.cpp",
+				cpp = "~/dotfiles/cp_templates/template.cpp",
 			},
 			evaluate_template_modifiers = true,
 			date_format = "%c",
