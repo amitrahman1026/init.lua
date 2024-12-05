@@ -16,6 +16,7 @@ return {
 					hide_gitignored = false, -- Show Git-ignored files
 					hide_hidden_count = false, -- Show count of hidden items
 				},
+                hijack_netrw_behavior = "disabled",
 			},
 		})
 
