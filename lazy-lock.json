@@ -5,6 +5,7 @@
   "competitest.nvim": { "branch": "master", "commit": "c3cb0e2b0916a879c4d3dcb5737e6c046dd0afc5" },
   "formatter.nvim": { "branch": "master", "commit": "ad246d34ce7a32f752071ed81b09b94e6b127fad" },
   "harpoon": { "branch": "master", "commit": "ccae1b9bec717ae284906b0bf83d720e59d12b91" },
+  "image.nvim": { "branch": "master", "commit": "b3e1af829a56bb038e5f81bf97798a2950064b62" },
   "lazy.nvim": { "branch": "main", "commit": "7967abe55752aa90532e6bb4bd4663fe27a264cb" },
   "lsp-zero.nvim": { "branch": "v4.x", "commit": "0161aeab61d407aa1d43326a5dfc33479f4c53f6" },
   "lualine.nvim": { "branch": "master", "commit": "b431d228b7bbcdaea818bdc3e25b8cdbe861f056" },
