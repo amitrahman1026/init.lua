@@ -44,7 +44,7 @@ return {
 							return {
 								exe = "clang-format",
 								args = {
-									"--style='{BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4, AccessModifierOffset: -4, AllowShortFunctionsOnASingleLine: All, AllowShortIfStatementsOnASingleLine: AllIfsAndElse}'",
+									"--style='{BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4, AccessModifierOffset: -4, AllowShortFunctionsOnASingleLine: All, AllowShortIfStatementsOnASingleLine: AllIfsAndElse, BreakTemplateDeclarations: Yes}'",
 								},
 								stdin = true,
 							}
