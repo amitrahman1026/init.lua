@@ -142,7 +142,7 @@ return {
 
 			-- Specific setup for clangd
 			lspconfig.clangd.setup({
-				cmd = { "clangd" }, -- Use homebrew's llvm/clangd ideally, remember to add the appropriate alias' on a mac
+				cmd = { "clangd", "--clang-tidy" }, -- Use homebrew's llvm/clangd ideally, remember to add the appropriate alias' on a mac
 				capabilities = require("cmp_nvim_lsp").default_capabilities(),
 				on_attach = lsp_attach,
 			})
