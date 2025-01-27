@@ -107,7 +107,6 @@ return {
 			})
 
 			require("mason-lspconfig").setup({
-				ensure_installed = { "tsserver", "eslint", "rust_analyzer" },
 				handlers = {
 					lsp_zero.default_setup,
 					lua_ls = function()
@@ -117,28 +116,28 @@ return {
 				},
 			})
 
-			-- Specific setup for ocamllsp
-			lspconfig.ocamllsp.setup({
-				cmd = { "opam", "exec", "--", "ocamllsp" },
-				capabilities = require("cmp_nvim_lsp").default_capabilities(),
-				filetypes = {
-					"ocaml",
-					"ocaml.menhir",
-					"ocaml.interface",
-					"ocaml.ocamllex",
-					"reason",
-					"dune",
-				},
-				root_dir = lspconfig.util.root_pattern(
-					"*.opam",
-					"esy.json",
-					"package.json",
-					".git",
-					"dune-project",
-					"dune-workspace"
-				),
-				on_attach = lsp_attach,
-			})
+		-- 	-- Specific setup for ocamllsp
+		-- 	lspconfig.ocamllsp.setup({
+		-- 		cmd = { "opam", "exec", "--", "ocamllsp" },
+		-- 		capabilities = require("cmp_nvim_lsp").default_capabilities(),
+		-- 		filetypes = {
+		-- 			"ocaml",
+		-- 			"ocaml.menhir",
+		-- 			"ocaml.interface",
+		-- 			"ocaml.ocamllex",
+		-- 			"reason",
+		-- 			"dune",
+		-- 		},
+		-- 		root_dir = lspconfig.util.root_pattern(
+		-- 			"*.opam",
+		-- 			"esy.json",
+		-- 			"package.json",
+		-- 			".git",
+		-- 			"dune-project",
+		-- 			"dune-workspace"
+		-- 		),
+		-- 		on_attach = lsp_attach,
+		-- 	})
 
 			-- Specific setup for clangd
 			lspconfig.clangd.setup({
