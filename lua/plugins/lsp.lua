@@ -63,6 +63,14 @@ return {
 		config = function()
 			local lsp_zero = require("lsp-zero")
 			local lspconfig = require("lspconfig")
+			-- virtual tex became disabled by default in nvim 0.11
+			vim.diagnostic.config({
+				virtual_text = true,
+				signs = true,
+				underline = true,
+				update_in_insert = false,
+				severity_sort = true,
+			})
 
 			local lsp_attach = function(client, bufnr)
 				local opts = { buffer = bufnr, remap = false }
@@ -107,7 +115,7 @@ return {
 			})
 
 			require("mason-lspconfig").setup({
-				ensure_installed = { "ts_ls", "eslint", "rust_analyzer" },
+				ensure_installed = { "rust_analyzer" },
 				handlers = {
 					lsp_zero.default_setup,
 					lua_ls = function()
