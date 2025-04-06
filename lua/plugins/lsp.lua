@@ -64,6 +64,15 @@ return {
 			local lsp_zero = require("lsp-zero")
 			local lspconfig = require("lspconfig")
 
+			-- virtual text for errors became disabled by defaults in neovim 0.11
+			vim.diagnostic.config({
+				virtual_text = true,
+				signs = true,
+				underline = true,
+				update_in_insert = false,
+				severity_sort = true,
+			})
+
 			local lsp_attach = function(client, bufnr)
 				local opts = { buffer = bufnr, remap = false }
 
@@ -142,7 +151,7 @@ return {
 
 			-- Specific setup for clangd
 			lspconfig.clangd.setup({
-				cmd = { "/opt/homebrew/opt/llvm/bin/clangd" }, -- Use homebrew's llvm/clangd ideally, remember to add the appropriate alias' on a mac
+				cmd = { "/opt/homebrew/opt/llvm/bin/clangd", "--clang-tidy" }, -- Use homebrew's llvm/clangd ideally, remember to add the appropriate alias' on a mac
 				capabilities = require("cmp_nvim_lsp").default_capabilities(),
 				on_attach = lsp_attach,
 			})

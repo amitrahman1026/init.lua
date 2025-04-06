@@ -44,7 +44,7 @@ return {
 							return {
 								exe = "clang-format",
 								args = {
-									"--style='{BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4, AccessModifierOffset: -4, AllowShortFunctionsOnASingleLine: All, AllowShortIfStatementsOnASingleLine: AllIfsAndElse}'",
+									"--style='{BasedOnStyle: llvm, IndentWidth: 4, TabWidth: 4, AccessModifierOffset: -4, AllowShortFunctionsOnASingleLine: All, AllowShortIfStatementsOnASingleLine: AllIfsAndElse, BreakTemplateDeclarations: Yes}'",
 								},
 								stdin = true,
 							}
@@ -194,7 +194,17 @@ return {
 				},
 			},
 		})
-		-- Key mapping to format code using formatter.nvim
-		vim.api.nvim_set_keymap("n", "<leader>f", ":Format<CR>", { noremap = true, silent = true })
+		-- Key mapping to format code using custom formatting settings in formatter.nvim,
+		-- but fallback to lsp/mason
+		vim.keymap.set("n", "<leader>f", function()
+			local filetype = vim.bo.filetype
+			local formatters = require("formatter.config").values.filetype[filetype]
+
+			if formatters and #formatters > 0 then
+				vim.cmd("Format")
+			else
+				vim.lsp.buf.format() -- typically I will install
+			end
+		end, { noremap = true, silent = true })
 	end,
 }
