@@ -86,6 +86,21 @@ return {
 				filetypes = { "ocaml", "ocaml.menhir", "ocaml.interface", "ocaml.ocamllex", "reason", "dune" },
 			}
 
+			vim.lsp.config.cmake = {
+				cmd = { "neocmakelsp", "--stdio" },
+				filetypes = { "cmake" },
+				root_markers = { ".git", "CMakeLists.txt", "build/", "build-*/" },
+				init_options = {
+					format = {
+						enable = true,
+					},
+					lint = {
+						enable = true,
+					},
+					scan_cmake_in_package = true,
+				},
+			}
+
 			vim.lsp.config.rust_analyzer = {
 				cmd = { "rust-analyzer" },
 				root_markers = { "Cargo.toml", "rust-project.json", ".git" },
@@ -93,7 +108,7 @@ return {
 			}
 
 			-- enable the servers here
-			vim.lsp.enable({ "lua_ls", "clangd", "ocamllsp", "rust_analyzer" })
+			vim.lsp.enable({ "lua_ls", "clangd", "cmake", "ocamllsp", "rust_analyzer" })
 
 			-- set up keymaps on LSP attach
 			vim.api.nvim_create_autocmd("LspAttach", {
