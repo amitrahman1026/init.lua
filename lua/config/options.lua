@@ -52,3 +52,12 @@ vim.g.python3_host_prog = "/usr/bin/python3"
 -- Netrw tree mode
 -- vim.g.netrw_liststyle = 3
 -- vim.g.netrw_winsize = 25
+
+-- Code folding
+opt.foldcolumn = "1" -- Show folding signs.
+opt.foldenable = true -- Enable folding.
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()" -- Use treesitter for folding.
+opt.foldlevel = 999 -- Close all folds.
+opt.foldlevelstart = 99 -- Start with all folds closed.
+opt.foldmethod = "expr" -- Use expr to determine fold level.
+opt.foldopen = "insert,mark,search,tag" -- Which commands open folds if the cursor moves into a closed fold.
