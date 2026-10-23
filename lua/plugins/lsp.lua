@@ -1,4 +1,3 @@
--- LSP Simplified for Neovim 0.11 native LSP
 return {
 	-- nvim-cmp for the superior completion experience
 	{
@@ -8,6 +7,8 @@ return {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-nvim-lua",
+			{ "L3MON4D3/LuaSnip" },
 		},
 		config = function()
 			local cmp = require("cmp")
@@ -16,7 +17,14 @@ return {
 				sources = {
 					{ name = "path" },
 					{ name = "nvim_lsp" },
+					{ name = "nvim_lua" },
 					{ name = "buffer", keyword_length = 3 },
+					{ name = "luasnip", keyword_length = 2 },
+				},
+				snippet = {
+					expand = function(args)
+						require("luasnip").lsp_expand(args.body)
+					end,
 				},
 				mapping = cmp.mapping.preset.insert({
 					["<C-p>"] = cmp.mapping.select_prev_item(),
@@ -37,23 +45,23 @@ return {
 		"neovim/nvim-lspconfig",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
-			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-nvim-lsp", -- for enhanced capabilities
 		},
 		config = function()
-			-- diagnostics config
+			-- virtual text became disabled by default in nvim 0.11
 			vim.diagnostic.config({
 				virtual_text = true,
-                virtual_lines = false,
+				virtual_lines = false,
 				signs = true,
 				underline = true,
 				update_in_insert = false,
 				severity_sort = true,
 			})
 
-			-- LSP servers using the new native config in nvim 0.11
+			-- set up LSP servers using the new native config
 			vim.lsp.config.lua_ls = {
 				cmd = { "lua-language-server" },
-				root_markers = { ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "selene.toml" },
+				root_markers = { ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "selene.toml", ".git" },
 				filetypes = { "lua" },
 				settings = {
 					Lua = {
@@ -62,12 +70,17 @@ return {
 							checkThirdParty = false,
 							library = { vim.env.VIMRUNTIME },
 						},
+						telemetry = { enable = false },
 					},
 				},
 			}
 
 			vim.lsp.config.clangd = {
-				cmd = { "/opt/homebrew/opt/llvm/bin/clangd", "--clang-tidy" },
+				-- Homebrew LLVM clangd on the Mac, system clangd elsewhere
+				cmd = {
+					vim.fn.executable("/opt/homebrew/opt/llvm/bin/clangd") == 1 and "/opt/homebrew/opt/llvm/bin/clangd" or "clangd",
+					"--clang-tidy",
+				},
 				root_markers = { "compile_commands.json", "compile_flags.txt", ".clangd", ".git" },
 				filetypes = { "c", "cpp", "objc", "objcpp" },
 			}
@@ -78,16 +91,31 @@ return {
 				filetypes = { "ocaml", "ocaml.menhir", "ocaml.interface", "ocaml.ocamllex", "reason", "dune" },
 			}
 
+			vim.lsp.config.cmake = {
+				cmd = { "neocmakelsp", "--stdio" },
+				filetypes = { "cmake" },
+				root_markers = { ".git", "CMakeLists.txt", "build/", "build-*/" },
+				init_options = {
+					format = {
+						enable = true,
+					},
+					lint = {
+						enable = true,
+					},
+					scan_cmake_in_package = true,
+				},
+			}
+
 			vim.lsp.config.rust_analyzer = {
 				cmd = { "rust-analyzer" },
-				root_markers = { "Cargo.toml", "rust-project.json" },
+				root_markers = { "Cargo.toml", "rust-project.json", ".git" },
 				filetypes = { "rust" },
 			}
 
-			-- enable lsp servers here
-			vim.lsp.enable({ "lua_ls", "clangd", "ocamllsp", "rust_analyzer" })
+			-- enable the servers here
+			vim.lsp.enable({ "lua_ls", "clangd", "cmake", "ocamllsp", "rust_analyzer" })
 
-			-- DON'T enable native completion since we're using nvim-cmp
+			-- set up keymaps on LSP attach
 			vim.api.nvim_create_autocmd("LspAttach", {
 				callback = function(ev)
 					-- custom keymaps
@@ -106,10 +134,7 @@ return {
 				end,
 			})
 
-            -- TODO: anything else?
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-			-- set window borders
+			-- set window borders for floating windows
 			vim.o.winborder = "rounded"
 		end,
 	},
