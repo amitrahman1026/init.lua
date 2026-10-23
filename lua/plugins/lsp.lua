@@ -8,7 +8,7 @@ return {
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-nvim-lua",
-			{ "L3MON4D3/LuaSnip" },
+			{ "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
 		},
 		config = function()
 			local cmp = require("cmp")
@@ -56,6 +56,11 @@ return {
 				underline = true,
 				update_in_insert = false,
 				severity_sort = true,
+			})
+
+			-- wire up cmp-nvim-lsp capabilities for all servers
+			vim.lsp.config('*', {
+				capabilities = require('cmp_nvim_lsp').default_capabilities(),
 			})
 
 			-- set up LSP servers using the new native config
@@ -125,8 +130,8 @@ return {
 					vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 					vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
 					vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, opts)
-					vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
-					vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
+					vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+					vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 					vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
 					vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
 					vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)

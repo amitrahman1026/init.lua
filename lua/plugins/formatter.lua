@@ -196,6 +196,10 @@ return {
 		})
 		-- Key mapping to format code using custom formatting settings in formatter.nvim,
 		-- but fallback to lsp/mason
+		vim.keymap.set("v", "<leader>f", function()
+			vim.lsp.buf.format()
+		end, { noremap = true, silent = true, desc = "Format selection (LSP)" })
+
 		vim.keymap.set("n", "<leader>f", function()
 			local filetype = vim.bo.filetype
 			local formatters = require("formatter.config").values.filetype[filetype]

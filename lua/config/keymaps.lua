@@ -24,3 +24,12 @@ map("x", "<leader>p", [["_dP]], { desc = "Paste without yanking replaced text" }
 
 -- Exit insert mode with Ctrl+c
 map("i", "<C-c>", "<Esc>", { desc = "Exit insert mode" })
+
+-- Undotree (native, Neovim 0.12+; ships as an optional package)
+vim.cmd.packadd("nvim.undotree")
+map("n", "<leader>u", "<cmd>Undotree<CR>", { desc = "Toggle Undotree" })
+
+-- Cmdline autopairs
+map("c", "(", "()<Left>")
+map("c", "[", "[]<Left>")
+map("c", "{", "{}<Left>")

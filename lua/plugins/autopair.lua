@@ -1,12 +1,11 @@
 return {
-	"altermo/ultimate-autopair.nvim",
-	event = { "InsertEnter", "CmdlineEnter" },
-	branch = "v0.6", --recommended as each new version will have breaking changes
-	opts = {
-		-- Configuration options go here
-		-- You can leave it empty for default settings
-	},
-	config = function(_, opts)
-		require("ultimate-autopair").setup(opts)
+	"windwp/nvim-autopairs",
+	event = "InsertEnter",
+	dependencies = { "hrsh7th/nvim-cmp" },
+	config = function()
+		require("nvim-autopairs").setup({ check_ts = true })
+		local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+		require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
+
 	end,
 }

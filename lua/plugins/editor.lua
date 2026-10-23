@@ -197,7 +197,7 @@ return {
 				title = true,
 				title_pos = "center",
 			},
-			layoutb = {
+			layout = {
 				spacing = 3,
 			},
 		},
